@@ -1,0 +1,46 @@
+schema_version: 1
+
+context:
+  name: de-bundestag
+  version: "0.1.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/de-bundestag-${{ version }}.tar.gz
+  sha256: 86316b951a432ae4224dd1a4c86eebea2ef37a98a9b13582a6f1a370c335f88c
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - poetry
+  run:
+    - python >=${{ python_min }}
+    - python-dateutil
+    - urllib3 >=1.25.3
+
+tests:
+  - python:
+      imports:
+        - deutschland.bundestag
+      pip_check: true
+      python_version: ${{ python_min }}
+
+about:
+  summary: "Bundestag: Live Informationen"
+  license: Apache-2.0
+  license_file:
+    - LICENSE
+  homepage: https://github.com/bundesAPI/bundestag-api
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
